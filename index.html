@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PowerHouse — Phase 1</title>
+  <style>
+    body{background:#121212;color:#f5f5f5;font-family:Arial,Helvetica,sans-serif;margin:0;padding:24px;text-align:center}
+    h1{color:#00ffcc;margin:0 0 6px}
+    p.sub{color:#bbb;margin:0 0 24px}
+    .btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+    button{flex:1 1 220px;min-width:160px;padding:12px 16px;border:0;border-radius:8px;background:#00ffcc;color:#121212;font-weight:700;cursor:pointer}
+    button:hover{background:#00ccaa}
+    pre{background:#1e1e1e;border-radius:10px;text-align:left;max-width:960px;margin:18px auto;padding:16px;white-space:pre-wrap;word-break:break-word;min-height:160px}
+    .input-row{margin:14px 0}
+    input[type="text"]{width:280px;max-width:80vw;padding:10px;border-radius:6px;border:1px solid #2d2d2d;background:#181818;color:#fff}
+    .note{color:#8d8d8d;font-size:12px;margin-top:8px}
+  </style>
+</head>
+<body>
+  <h1>🚀 PowerHouse Dashboard — Phase 1</h1>
+  <p class="sub">✨ Live Niches + Keywords • Netlify Functions • Mobile-friendly</p>
+
+  <div class="btns">
+    <button onclick="runNiches()">🔥 Fetch Hot Niches</button>
+    <button onclick="runKeywords()">🔑 Validate Keywords</button>
+  </div>
+
+  <div class="input-row">
+    <input id="kwInput" type="text" placeholder="Enter niche (e.g., drone business)"/>
+  </div>
+
+  <pre id="out">Tap a button to get started…</pre>
+  <p class="note">Shows 💵 loading first, then real JSON when APIs respond.</p>
+
+  <script>
+    const out = document.getElementById('out');
+    function buckle(msg){ out.textContent = `💵 Buckle up... ${msg} 💵💵💵`; }
+    async function runNiches(){
+      buckle('cash incoming soon! Fetching hot niches! 🔥');
+      try{
+        const r = await fetch('/.netlify/functions/niches');
+        const j = await r.json();
+        out.textContent = JSON.stringify(j, null, 2);
+      }catch(e){
+        out.textContent += "\n❌ " + e.message;
+      }
+    }
+    async function runKeywords(){
+      const niche = document.getElementById('kwInput').value || prompt('Enter a niche keyword:');
+      if(!niche) return;
+      buckle('cash incoming soon! Finding golden keywords! 🔑');
+      try{
+        const r = await fetch('/.netlify/functions/keywords?niche=' + encodeURIComponent(niche));
+        const j = await r.json();
+        out.textContent = JSON.stringify(j, null, 2);
+      }catch(e){
+        out.textContent += "\n❌ " + e.message;
+      }
+    }
+  </script>
+</body>
+</html>
