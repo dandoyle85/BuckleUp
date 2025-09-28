@@ -1,8 +1,0 @@
-[build]
-  publish = "."
-  functions = "netlify/functions"
-
-[[redirects]]
-  from = "/go/:id"
-  to = "/.netlify/functions/tracker?id=:id"
-  status = 200
